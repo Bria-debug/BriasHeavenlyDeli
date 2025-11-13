@@ -1,19 +1,18 @@
 package com.pluralsight;
 
-public class SignatureSandwich extends Sandwich{
+public class SignatureSandwich extends Sandwich {
 
     private String zodiacName;
 
-    public SignatureSandwich(String zodiacName){
+    public SignatureSandwich(String zodiacName) {
         super();// calls sandwich constructor
         this.zodiacName = zodiacName;
-
         setPresetToppings(); //sets default toppings based on zodiac
     }
 
     private void setPresetToppings() {
         //zodiac names matches to a recipe
-        switch (zodiacName.toLowerCase()){
+        switch (zodiacName.toLowerCase()) {
             case "aries":
                 setBreadType("Jalapeño cheddar cornbread loaf");
                 getMeats().add("Spicy fried chicken breast");
@@ -134,11 +133,21 @@ public class SignatureSandwich extends Sandwich{
                 getRegularToppings().add("Lettuce");
                 getSauces().add("Mayo");
                 break;
+        }
     }
-}}
-Override
-public String toString() {
-    return "* Zodiac Sandwich -" + zodiacName + "*\n" +
-            super.toString();
 
+    @Override
+    public String toString() {
+        return "* Zodiac Sandwich -" + zodiacName + "*\n" +
+                super.toString();
+
+    }
+
+    public double getPrice() {
+        return 5.55;
+    }
+
+    public String getName() {
+        return zodiacName;
+    }
 }
