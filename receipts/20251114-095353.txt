@@ -1,0 +1,22 @@
+Bria's Heavenly Deli - Receipt
+Date: 2025-11-14T09:53:53.292031
+
+Current Order:
+1) Scorpio (8 inch)
+Bread: White (toasted)
+Meats: []
+Cheeses: []
+Toppings: [House special sauce]
+Price: $8.50
+------------------
+2) Virgo (8 inch)
+Bread: White (toasted)
+Meats: []
+Cheeses: []
+Toppings: [House special sauce]
+Price: $8.50
+------------------
+Chips: 100
+Drinks: 50
+Total: $267.00
+Thank you for ordering from Bria's Heavenly Deli

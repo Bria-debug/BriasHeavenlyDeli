@@ -1,0 +1,29 @@
+Bria's Heavenly Deli - Receipt
+Date: 2025-11-14T09:55:18.478243
+
+Current Order:
+1) Taurus (8 inch)
+Bread: White (toasted)
+Meats: [Roast beef]
+Cheeses: [Cheddar]
+Toppings: [Lettuce, Tomato]
+Price: $10.25
+------------------
+2) Sagittarius - The Wanderlust (8 inch)
+Bread: White (toasted)
+Meats: []
+Cheeses: []
+Toppings: []
+Price: $8.50
+------------------
+3) Pisces - The Dreamboat (8 inch)
+Bread: White (toasted)
+Meats: []
+Cheeses: []
+Toppings: []
+Price: $8.50
+------------------
+Chips: 6
+Drinks: 87
+Total: $210.25
+Thank you for ordering from Bria's Heavenly Deli
