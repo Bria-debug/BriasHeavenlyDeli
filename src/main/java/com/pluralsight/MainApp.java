@@ -5,45 +5,63 @@ import java.util.Scanner;
 
 public class MainApp {
     private static Scanner scanner = new Scanner(System.in);
-    private static Order currentOrder = null;
+    private static Order currentOrder = new Order();
 
     public static void main(String[] args) {
         System.out.println("*** Welcome to Bria's Heavenly Deli ***");
         System.out.println("Where every bite is written in the stars");
 
-        currentOrder = new Order();
-
-
         boolean running = true;
 
-
         while (running){
-            System.out.println("Main Menu:");
-            System.out.println("1) Zodiac Sandwich Menu");
-            System.out.println("2) View Current Order");
-            System.out.println("3) Checkout");
-            System.out.println("0) Cancel order");
+            System.out.println("\nMain Menu:");
+            System.out.println("1) Build Your Own Sandwich");
+            System.out.println("2) Order a Zodiac Signature Sandwich");
+            System.out.println("3) Add Chips");
+            System.out.println("4) Add Drink");
+            System.out.println("5) View Current Order");
+            System.out.println("6) Checkout");
+            System.out.println("0) Exit");
             System.out.println("Choose an option");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    SignatureSandwich sandwich = selectZodiacSandwich();
-                    if (sandwich != null) {
-                        currentOrder.addSandwich(sandwich);
-                        System.out.println(sandwich.getName() + " added to order!\n");
+                    Sandwich custom = buildYourOwnSandwich();
+                    if (custom != null) {
+                        currentOrder.addSandwich(custom);
+                        System.out.println("Custom sandwich added to order!");
                     }
                     break;
                 case 2:
-                    currentOrder.displayOrder();
+                    SignatureSandwich zodiac = (SignatureSandwich) selectZodiacSandwich();
+                    if (zodiac != null){
+                        currentOrder.addSandwich(zodiac);
+                        System.out.println(zodiac.getName()+"sandwich added to order!");
+                    }
                     break;
                 case 3:
+                    System.out.println("Enter chip flavor:");
+                    String flavor = scanner.nextLine();
+                    currentOrder.addChips(new Chips(flavor));
+                    System.out.println("Chips added.");
+                    break;
+                case 4:
+                    System.out.println("Enter drink size(small/medium/large);");
+                    String size = scanner.nextLine();
+                    currentOrder.addDrink(new Drink(size));
+                    System.out.println("Drink added!");
+                    break;
+                case 5:
+                    currentOrder.displayOrder();
+                    break;
+                case 6:
                     checkout();
                     running = false;
                     break;
                 case 0:
-                    System.out.println("Order canceled \n");
+                    System.out.println("Goodbye! Thanks for visiting!");
                     running = false;
                     break;
                 default:
@@ -51,93 +69,98 @@ public class MainApp {
             }
             }
         }
-        private static SignatureSandwich selectZodiacSandwich() {
-            System.out.println("\n Zodiac Sandwiches");
-            System.out.println("111) Aries - The Firestarter");
-            System.out.println("222) Taurus - The Comfort Fix");
-            System.out.println("333) Gemini - The Two-Step");
-            System.out.println("444) Cancer - Mama's Hug");
-            System.out.println("555) Leo - The Spotlight");
-            System.out.println("669) Virgo - The Purist");
-            System.out.println("777) Libra - The Balance Beam");
-            System.out.println("888) Scorpio - The Deep End");
-            System.out.println("999) Sagittarius - The Wanderlust");
-            System.out.println("1010) Capricorn - The Boss");
-            System.out.println("1111) Aquarius - The Rebel");
-            System.out.println("1212) Pisces - The Dreamboat");
-            System.out.println("0) Back to Main Menu");
-            System.out.println("Select your sign:");
+        //BUILDS SANDWICH
+        private static Sandwich buildYourOwnSandwich() {
+            System.out.println("\n--- Build Your Own Sandwich ---");
 
-            int selection = scanner.nextInt();
-            scanner.nextLine();
+            //SANDWICH SIZES
+            System.out.println("Choose a size (4, 8, or 12):");
+            int size = Integer.parseInt(scanner.nextLine());
 
-            if (selection == 0) return null;
+            //BREAD TYPE
+            System.out.println("Choose bread(white, wheat, rye, wrap):");
+            String bread = scanner.nextLine().toLowerCase();
 
-            String zodiacName = "";
-            switch (selection) {
-                case 111:
-                    zodiacName = "Aries";
-                    break;
-                case 222:
-                    zodiacName = "Taurus";
-                    break;
-                case 333:
-                    zodiacName = "Gemini";
-                    break;
-                case 444:
-                    zodiacName = "Cancer";
-                    break;
-                case 555:
-                    zodiacName = "Leo";
-                    break;
-                case 669:
-                    zodiacName = "Virgo";
-                    break;
-                case 777:
-                    zodiacName = "Libra";
-                    break;
-                case 888:
-                    zodiacName = "Scorpio";
-                    break;
-                case 999:
-                    zodiacName = "Sagittarius";
-                    break;
-                case 1010:
-                    zodiacName = "Capricorn";
-                    break;
-                case 1111:
-                    zodiacName = "Aquarius";
-                    break;
-                case 1212:
-                    zodiacName = "Pisces";
-                    break;
-                default:
-                    System.out.println("Invalid choice.\n");
-                    return null;
+            Sandwich sandwich = new Sandwich(size, bread);
+
+            System.out.println("Toasted? (yes/no)");
+            sandwich.setToasted(scanner.nextLine().equalsIgnoreCase("yes"));
+
+            //REGULAR TOPPINGS
+            System.out.println("Add a regular topping (or type 'done'):");
+            String topping = scanner.nextLine();
+            while (!topping.equalsIgnoreCase("done")) {
+                sandwich.addTopping(new Topping(topping, false, false));
+                System.out.println("Add another regular topping (or type 'done'):");
+                topping = scanner.nextLine();
             }
 
-            return new SignatureSandwich(zodiacName);
+            // Premium toppings
+            System.out.println("Add a premium topping (or type 'done'):");
+            String premium = scanner.nextLine();
+            while (!premium.equalsIgnoreCase("done")) {
+                sandwich.addTopping(new Topping(premium, true, false));
+                System.out.println("Add another premium topping (or type 'done'):");
+                premium = scanner.nextLine();
+            }
+
+            return sandwich;
         }
 
-        private static void checkout() {
-        if (currentOrder == null || currentOrder.isEmpty()) {
-            System.out.println("\n Your order is empty.\n");
+
+
+
+    // ------------------------
+    // ZODIAC SIGNATURE SANDWICH
+    // ------------------------
+    private static SignatureSandwich selectZodiacSandwich() {
+        System.out.println("\n------- Zodiac Signature Sandwiches ------");
+        System.out.println("1) Aries");
+        System.out.println("2) Taurus");
+        System.out.println("3) Gemini");
+        System.out.println("4) Cancer");
+        System.out.println("5) Leo");
+        System.out.println("6) Virgo");
+        System.out.println("7) Libra");
+        System.out.println("8) Scorpio");
+        System.out.println("9) Sagittarius");
+        System.out.println("10) Capricorn");
+        System.out.println("11) Aquarius");
+        System.out.println("12) Pisces");
+
+        int selection = scanner.nextInt();
+        scanner.nextLine();
+
+        if (selection < 1 || selection > 12) {
+            System.out.println("Invalid choice.\n");
+            return null;
+        }
+
+        return new SignatureSandwich(selection);
+    }
+
+
+
+    // ------------------------
+    // CHECKOUT
+    // ------------------------
+    private static void checkout() {
+        if (currentOrder.isEmpty()) {
+            System.out.println("\nYour order is empty.\n");
             return;
         }
 
         currentOrder.displayOrder();
-            System.out.println("Confirm order? (yes/no):");
-            String confirm = scanner.nextLine().toLowerCase();
 
-            if (confirm.equals("yes")) {
-                System.out.println("Order confirmed");
-            }else {
-                System.out.println("Order canceled.\n");
-            }
+        System.out.println("Confirm order? (yes/no):");
+        String confirm = scanner.nextLine();
 
-
-
-
+        if (confirm.equalsIgnoreCase("yes")) {
+            currentOrder.saveReceipt();
+            System.out.println("Order saved! Thank you!");
+        } else {
+            System.out.println("Order canceled.");
         }
     }
+}
 

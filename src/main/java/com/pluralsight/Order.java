@@ -3,6 +3,7 @@ package com.pluralsight;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,91 +11,109 @@ import java.util.List;
 
 public class Order {
     private List<SignatureSandwich> sandwiches;
+    private int chipsCount;
+    private int drinksCount;
 
     public Order() {
         sandwiches = new ArrayList<>();
+        chipsCount = 0;
+        drinksCount = 0;
     }
 
-    public void addSandwich(SignatureSandwich sandwich) {
-        sandwiches.add(sandwich);
+    public void addSandwich(Sandwich sandwich) {
+        sandwiches.add((SignatureSandwich) sandwich);
+    }
+
+    public void addChip() {
+        chipsCount++;
+        System.out.println("Chips added to order!");
+    }
+
+    public void addDrink() {
+        drinksCount++;
+        System.out.println("Drink added to order!");
+    }
+
+    public boolean isEmpty(){
+        return sandwiches.isEmpty() && chipsCount == 0 && drinksCount == 0;
     }
 
     public void displayOrder() {
         System.out.println("🪐 Your Heavenly Order 🪐");
 
-        if (sandwiches.isEmpty()) {
-            System.out.println("No sandwiches in this order yet.\n");
-            return;
-        }
-
         double total = 0;
-        for (int i = 0; i < sandwiches.size(); i++) {
-            SignatureSandwich s = sandwiches.get(i);
-            System.out.println((i + 1) + ") " + s.getName());
+        int count = 1;
+
+        for (Sandwich s : sandwiches) {
+            System.out.println(count++ + ") " + s.getName());
             System.out.println(s);
             System.out.println("--------------------------");
             total += s.getPrice();
         }
 
-        System.out.printf("Total: $%.2f%n%n", total);
-    }
-
-    public double getTotal() {
-        double total = 0;
-        for (SignatureSandwich s : sandwiches) {
-            total += s.getPrice();
+        if (chipsCount > 0) {
+            System.out.println("Chips x" + chipsCount + " - $" + (chipsCount * 1.50));
+            total += chipsCount * 1.50;
         }
-        return total;
+
+        if (drinksCount > 0) {
+            System.out.println("Drinks x" + drinksCount + " - $" + (drinksCount * 2.00));
+            total += drinksCount * 2.00;
+        }
+
+        System.out.printf("Total: $%.2f%n", total);
     }
 
-    public boolean isEmpty() {
-        return sandwiches.isEmpty();
-    }
-
-    public List<SignatureSandwich> getSandwiches() {
-        return sandwiches;
-    }
-
+    // --- Save receipt to file ---
     public void saveReceipt() {
-        if (sandwiches.isEmpty()) {
+        if (isEmpty()) {
             System.out.println("Cannot save empty order.");
             return;
         }
 
-        try {
+        // Create the receipts folder if it doesn’t exist
+        File folder = new File("receipts");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
 
-            File folder = new File("receipts");
-            if (!folder.exists()) {
-                folder.mkdir();
-            }
+        // Create the file name (e.g. 20251112-154233.txt)
+        String timestamp = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+        File file = new File(folder, timestamp + ".txt");
 
-            // Create a unique filename using the current date and time
-            String fileName = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date()) + ".txt";
-            File file = new File(folder, fileName);
-
-            // Write the receipt contents
-            FileWriter writer = new FileWriter(file);
-            writer.write("*** Bria's Heavenly Deli Receipt ***\n");
-            writer.write("Where every bite is written in the stars ✨\n\n");
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write("✨ Bria's Heavenly Deli ✨\n");
+            writer.write("Where every bite is written in the stars \n");
+            writer.write("Receipt Date: " + new Date() + "\n\n");
 
             double total = 0;
-            for (int i = 0; i < sandwiches.size(); i++) {
-                SignatureSandwich s = sandwiches.get(i);
-                writer.write((i + 1) + ") " + s.getName() + "\n");
+            int count = 1;
+
+            for (Sandwich s : sandwiches) {
+                writer.write(count++ + ") " + s.getName() + "\n");
                 writer.write(s.toString() + "\n");
-                writer.write("------------------------------\n");
+                writer.write("--------------------------\n");
                 total += s.getPrice();
             }
 
+            if (chipsCount > 0) {
+                writer.write("Chips x" + chipsCount + " - $" + (chipsCount * 1.50) + "\n");
+                total += chipsCount * 1.50;
+            }
+
+            if (drinksCount > 0) {
+                writer.write("Drinks x" + drinksCount + " - $" + (drinksCount * 2.00) + "\n");
+                total += drinksCount * 2.00;
+            }
+
             writer.write(String.format("Total: $%.2f%n", total));
-            writer.write("Thank you for dining with us 💫\n");
-            writer.write("Saved on: " + new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()) + "\n");
+            writer.write("\nThank you for visiting Bria’s Heavenly Deli!\n");
 
-            writer.close();
-
-            System.out.println("🧾 Receipt saved to: " + file.getAbsolutePath());
-
-        } catch (Exception e) {
-            System.out.println("Error saving receipt: " + e.getMessage());
+            System.out.println("\n Receipt saved successfully as: " + file.getName());
+        } catch (IOException e) {
+            System.out.println(" Error saving receipt: " + e.getMessage());
         }
-    }}
+    }
+
+}
+

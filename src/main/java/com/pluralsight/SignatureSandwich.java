@@ -2,152 +2,112 @@ package com.pluralsight;
 
 public class SignatureSandwich extends Sandwich {
 
-    private String zodiacName;
-
     public SignatureSandwich(String zodiacName) {
-        super();// calls sandwich constructor
-        this.zodiacName = zodiacName;
-        setPresetToppings(); //sets default toppings based on zodiac
+        super();  // uses your default constructor
+        setZodiacSandwich(zodiacName);
     }
 
-    private void setPresetToppings() {
-        //zodiac names matches to a recipe
-        switch (zodiacName.toLowerCase()) {
-            case "aries":
-                setBreadType("Jalapeño cheddar cornbread loaf");
-                getMeats().add("Spicy fried chicken breast");
-                getCheeses().add("Pepper jack");
-                getRegularToppings().add("Pickled red onions");
-                getRegularToppings().add("Shredded romaine");
-                getSauces().add("Hot honey remoulade");
-                break;
+    public SignatureSandwich(int zodiacNumber) {
+        super();
+        setZodiacSandwich(getZodiacName(zodiacNumber));
+    }
 
-            case "taurus":
-                setBreadType("Buttermilk biscuit sandwich");
-                getMeats().add("Smoked turkey (brown sugar glaze)");
-                getCheeses().add("Sharp cheddar");
-                getRegularToppings().add("Collard green slaw");
-                getRegularToppings().add("Tomato slice");
-                getSauces().add("Garlic herb mayo");
-                break;
-
-            case "gemini":
-                setBreadType("Half Hawaiian roll + half Texas toast");
-                getMeats().add("Half BBQ pulled pork");
-                getMeats().add("Half jerk chicken");
-                getCheeses().add("Gouda");
-                getRegularToppings().add("Pineapple salsa");
-                getRegularToppings().add("Pickled okra slices");
-                getSauces().add("Mango-chipotle aioli");
-                break;
-
-            case "cancer":
-                setBreadType("Honey butter brioche bun");
-                getMeats().add("Fried catfish filet");
-                getCheeses().add("American");
-                getRegularToppings().add("Lettuce");
-                getRegularToppings().add("Tomato");
-                getRegularToppings().add("Bread & butter pickles");
-                getSauces().add("Cajun tartar sauce");
-                break;
-
-            case "leo":
-                setBreadType("Toasted ciabatta roll");
-                getMeats().add("Blackened ribeye steak slices");
-                getCheeses().add("Havarti");
-                getRegularToppings().add("Caramelized onions");
-                getRegularToppings().add("Arugula");
-                getSauces().add("Truffle garlic aioli");
-                break;
-
-            case "virgo":
-                setBreadType("Multigrain loaf");
-                getMeats().add("Herb-roasted chicken breast");
-                getCheeses().add("Swiss");
-                getRegularToppings().add("Cucumber ribbons");
-                getRegularToppings().add("Spinach");
-                getRegularToppings().add("Pickled carrots");
-                getSauces().add("Lemon-dill yogurt sauce");
-                break;
-
-            case "libra":
-                setBreadType("Sweet potato bun");
-                getMeats().add("Turkey");
-                getMeats().add("Honey ham");
-                getCheeses().add("Brie");
-                getRegularToppings().add("Spring greens");
-                getRegularToppings().add("Sliced apple");
-                getSauces().add("Fig mustard glaze");
-                break;
-
-            case "scorpio":
-                setBreadType("Dark rye");
-                getMeats().add("Cajun roast beef");
-                getCheeses().add("Smoked gouda");
-                getRegularToppings().add("Roasted red peppers");
-                getRegularToppings().add("Jalapeños");
-                getSauces().add("Black garlic aioli");
-                break;
-
-            case "sagittarius":
-                setBreadType("Toasted Cuban roll");
-                getMeats().add("Mojo pork");
-                getCheeses().add("Provolone");
-                getRegularToppings().add("Plantain chips");
-                getRegularToppings().add("Pickled red onions");
-                getSauces().add("Cilantro-lime crema");
-                break;
-
-            case "capricorn":
-                setBreadType("Classic sourdough");
-                getMeats().add("Country ham or brisket");
-                getCheeses().add("White cheddar");
-                getRegularToppings().add("Kale slaw");
-                getRegularToppings().add("Tomato");
-                getSauces().add("Horseradish mayo");
-                break;
-
-            case "aquarius":
-                setBreadType("Spinach wrap");
-                getMeats().add("Grilled jerk jackfruit or shrimp");
-                getCheeses().add("Pepper feta crumble");
-                getRegularToppings().add("Avocado");
-                getRegularToppings().add("Shredded cabbage");
-                getSauces().add("Citrus tahini dressing");
-                break;
-
-            case "pisces":
-                setBreadType("Sweet honey croissant");
-                getMeats().add("Lemon-butter salmon");
-                getCheeses().add("Cream cheese spread");
-                getRegularToppings().add("Cucumber");
-                getRegularToppings().add("Dill");
-                getRegularToppings().add("Arugula");
-                getSauces().add("Honey-lemon glaze");
-                break;
-
-            default:
-                setBreadType("White");
-                getMeats().add("Ham");
-                getCheeses().add("American");
-                getRegularToppings().add("Lettuce");
-                getSauces().add("Mayo");
-                break;
+    private String getZodiacName(int num) {
+        switch (num) {
+            case 1: return "Aries";
+            case 2: return "Taurus";
+            case 3: return "Gemini";
+            case 4: return "Cancer";
+            case 5: return "Leo";
+            case 6: return "Virgo";
+            case 7: return "Libra";
+            case 8: return "Scorpio";
+            case 9: return "Sagittarius";
+            case 10: return "Capricorn";
+            case 11: return "Aquarius";
+            case 12: return "Pisces";
+            default: return "Unknown";
         }
     }
 
-    @Override
-    public String toString() {
-        return "* Zodiac Sandwich -" + zodiacName + "*\n" +
-                super.toString();
+    private void setZodiacSandwich(String sign) {
 
-    }
+        // All signature sandwiches are toasted
+        setToasted(true);
 
-    public double getPrice() {
-        return 5.55;
-    }
+        switch (sign) {
 
-    public String getName() {
-        return zodiacName;
+            case "Aries":
+                getMeatToppings().add("Buffalo chicken");
+                getCheeseToppings().add("Pepper jack");
+                getRegularToppings().add("Chipotle mayo");
+                break;
+
+            case "Taurus":
+                getMeatToppings().add("Roast beef");
+                getCheeseToppings().add("Cheddar");
+                getRegularToppings().add("Lettuce");
+                getRegularToppings().add("Tomato");
+                break;
+
+            case "Gemini":
+                getMeatToppings().add("Turkey");
+                getMeatToppings().add("Ham");
+                getCheeseToppings().add("Swiss");
+                break;
+
+            case "Cancer":
+                getMeatToppings().add("Chicken salad");
+                getRegularToppings().add("Lettuce");
+                break;
+
+            case "Leo":
+                getMeatToppings().add("Steak slices");
+                getCheeseToppings().add("Havarti");
+                getRegularToppings().add("Truffle aioli");
+                break;
+
+            case "Virgo":
+                getMeatToppings().add("Grilled chicken");
+                getCheeseToppings().add("Provolone");
+                getRegularToppings().add("Cucumber");
+                break;
+
+            case "Libra":
+                getMeatToppings().add("Salami");
+                getCheeseToppings().add("Mozzarella");
+                getRegularToppings().add("Basil pesto");
+                break;
+
+            case "Scorpio":
+                getMeatToppings().add("Spicy capicola");
+                getCheeseToppings().add("Smoked gouda");
+                getRegularToppings().add("Hot honey");
+                break;
+
+            case "Sagittarius":
+                getMeatToppings().add("Grilled lamb");
+                getCheeseToppings().add("Feta");
+                getRegularToppings().add("Tzatziki");
+                break;
+
+            case "Capricorn":
+                getMeatToppings().add("Turkey");
+                getCheeseToppings().add("Sharp cheddar");
+                getRegularToppings().add("Mustard");
+                break;
+
+            case "Aquarius":
+                getMeatToppings().add("Jerk jackfruit");
+                getCheeseToppings().add("Feta crumble");
+                getRegularToppings().add("Citrus tahini");
+                break;
+
+            case "Pisces":
+                getMeatToppings().add("Tuna salad");
+                getRegularToppings().add("Pickles");
+                getRegularToppings().add("Lemon dill sauce");
+                break;
+        }
     }
 }
