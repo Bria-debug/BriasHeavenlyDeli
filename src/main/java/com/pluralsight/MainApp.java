@@ -133,7 +133,7 @@ public class MainApp {
         scanner.close();
     }
 
-    // Helper to read an integer safely from the scanner
+    // Helper to read integar from scanner
     private static int readInt(Scanner scanner) {
         String line = scanner.nextLine().trim();
         if (line.isEmpty()) return 0;
