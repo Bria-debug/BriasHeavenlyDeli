@@ -1,6 +1,5 @@
 package com.pluralsight;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -133,7 +132,7 @@ public class MainApp {
         scanner.close();
     }
 
-    // Helper to read integar from scanner
+    // Helper read integar from scanner
     private static int readInt(Scanner scanner) {
         String line = scanner.nextLine().trim();
         if (line.isEmpty()) return 0;
